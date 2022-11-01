@@ -1,0 +1,78 @@
+{% extends 'layouts/base.html' %} 
+{% set active_page = 'dashboard' %}
+
+{% block title %} 
+	Sentiment Dashboard
+{% endblock %}
+
+{% block heading %} 
+	<h2 class="sentiment-title">Dashboard</h2>
+	<p class="sentiment-subtitle">View the summary of sentiment data </p>
+{% endblock %}
+
+{% block content %}
+<div class="row mt-3 mr-2">
+    <div class="col-12 mt-2">
+		{% if error %}
+			<div class="d-block">	
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<i>{{ error }}</i>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			</div>
+		{% endif %}
+		<div class="card">
+			<div class="card-body">
+				{% if error %}
+					<div class="row col-12 mx-2 d-block">	
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<p> {{ error }}</p>
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+						</div>
+					</div>
+				{% endif %}
+				<div class="row table-wrapper">
+					<table class="table mx-4 my-2 table-responsive-md">
+						<thead style="border-top: none; !important">
+						<tr class="text-muted">
+							<th scope="col" style="width:5%"></th>
+							<th scope="col" style="width:75%">TEXT</th>
+							<th scope="col" style="width:15%">SENTIMENT</th>
+							<th scope="col" style="width:5%"></th>
+						</tr>
+						</thead>
+						<tbody>
+							{% for sentiment in sentiments %}
+								<tr>
+									<td>{{ loop.index }}</td>
+									<td>
+										<div> {{ sentiment.text }} <div> 
+										<small class="text-muted"> {{sentiment.created_at.strftime("%d %B %Y, %-I:%M:%S %p")}} </small>
+									</td>
+									<td>
+										{% if sentiment.sentiment == 'Positive' %}
+											<span class="badge badge-success"> {{ sentiment.sentiment }} </span>
+										{% elif sentiment.sentiment == 'Negative' %}
+											<span class="badge badge-danger"> {{ sentiment.sentiment }} </span>
+										{% endif%}
+									</td>
+									<td>
+										<form action="{{ url_for('api_route.delete_sentiment', id=sentiment.id) }}" method="POST">
+											<button type="submit" class="btn btn-warning"><span class="fa fa-trash"></span></a>
+										</form> 
+										
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

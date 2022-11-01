@@ -1,0 +1,11 @@
+<div class="border-right" id="sidebar-wrapper">
+	<div class="sidebar-heading text-center">
+		<img src="{{ url_for('static', filename='images/sentiment-analysis.png') }}" alt=""
+			class="my-4 logo-sentiment" />
+	</div>
+	<div class="list-group list-group-flush">
+		<a href="{{ url_for('webpage_route.dashboard') }}" class="list-group-item list-group-item-action {{ 'active' if active_page == 'dashboard'}}"> Dashboard </a>
+		<a href="{{ url_for('webpage_route.add_data') }}" class="list-group-item list-group-item-action {{ 'active' if active_page == 'add-data'}}"> Add Data </a>
+		<a href="{{ url_for('webpage_route.contributor') }}" class="list-group-item list-group-item-action {{ 'active' if active_page == 'contributor'}}"> Contributor </a>
+	</div>
+</div>

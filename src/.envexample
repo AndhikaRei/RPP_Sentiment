@@ -1,0 +1,9 @@
+DEBUG=True
+FLASK_DEBUG=True
+FLASK_APP=app.py
+SECRET_KEY=mysecret
+THREADED=False
+UPLOAD_FOLDER=./static/uploads
+
+SQLALCHEMY_TRACK_MODIFICATIONS=False
+SQLALCHEMY_DATABASE_URI=sqlite:///app.sqlite
