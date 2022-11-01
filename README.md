@@ -23,7 +23,7 @@ SKKNI no 123 tahun 2021 yang diketuai oleh Bapak Windy Gambetta. Program ini dib
 
 ## Requirements
 - [Python ^3.8](https://www.python.org/downloads/)
-- [Poetry](https://python-poetry.org/docs/#installation)(optional)
+- [Poetry](https://python-poetry.org/docs/#installation) (optional)
 
 ## Installation And Run
 Clone the repository
