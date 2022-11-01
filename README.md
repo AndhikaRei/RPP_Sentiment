@@ -26,10 +26,12 @@ SKKNI no 123 tahun 2021 yang diketuai oleh Bapak Windy Gambetta. Program ini dib
 - [Poetry](https://python-poetry.org/docs/#installation) (optional)
 
 ## Installation And Run
-Clone the repository
+1. Clone the repository
 ```bash
 git clone https://github.com/AndhikaRei/RPP_Sentiment.git
 ```
+2. Copy the .envexample and rename the file to .env
+
 ### Automatic Setup
 #### Poetry
 1. Make sure you have poetry installed
