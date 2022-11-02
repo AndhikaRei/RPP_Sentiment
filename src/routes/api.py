@@ -5,6 +5,7 @@ Routing for API.
 # Import python modules.
 import os
 import random
+import pickle
 from typing import List
 from datetime import datetime
 from flask import Blueprint, request, url_for, redirect, render_template
@@ -13,6 +14,9 @@ from werkzeug.utils import secure_filename
 # Import created modules.
 from src import db
 from src.models.sentiment import Sentiment
+
+# Load model from pickled file
+model = pickle.load(open('model.pkl', 'rb'))
 
 # Make the blueprint.
 api_route = Blueprint('api_route', __name__, url_prefix='/api/v1')

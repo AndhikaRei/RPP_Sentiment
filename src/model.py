@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import itertools
 import matplotlib.pyplot as plt
+import pickle
 
 from nltk import pos_tag
 from nltk.stem import PorterStemmer, SnowballStemmer
@@ -93,3 +94,5 @@ score_model(y_train, y_pred_train_rbf)
 
 y_nb_pred_train_uni = nb_model_uni.predict(X_train)
 score_model(y_train, y_nb_pred_train_uni, False)
+
+pickle.dump(svm_model, open('model.pkl', 'wb'))
