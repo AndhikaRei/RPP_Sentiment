@@ -18,6 +18,7 @@ Sastrawi = "^1.0.1"
 nltk = "^3.7"
 matplotlib = "^3.6.2"
 imbalanced-learn = "^0.9.1"
+psycopg2-binary = "^2.9.5"
 
 [tool.poetry.dev-dependencies]
 
