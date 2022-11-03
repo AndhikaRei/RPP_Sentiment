@@ -7,7 +7,6 @@ import pandas as pd
 import itertools
 import matplotlib.pyplot as plt
 import pickle
-import os
 
 from nltk import pos_tag
 from nltk.stem import PorterStemmer, SnowballStemmer
@@ -22,8 +21,18 @@ from imblearn.over_sampling import RandomOverSampler
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
-from src import rootdir
 
+df_train = pd.read_csv('../data/data.csv')
+
+add_stopwords = set(StopWordRemoverFactory().get_stop_words())
+print('sastrawi stopwords:', len(add_stopwords))
+
+stopwords_set = set(stopwords.words())
+print('nltk stopwords:', len(stopwords_set))
+stopwords_set = stopwords_set.union(add_stopwords)
+print('nltk added stopwords:', len(stopwords_set))
+
+stemmer = StemmerFactory().create_stemmer()
 def normalize_text(string: str, stem: bool=True, sw_elim: bool=True) -> List[str]:
   # filtering, only characters allowed
   filtered = re.sub('[^a-zA-Z]', ' ', string)
@@ -34,6 +43,14 @@ def normalize_text(string: str, stem: bool=True, sw_elim: bool=True) -> List[str
   # eliminate stopwords
   res = [word for word in tokenized if word not in stopwords_set] if sw_elim else tokenized
   return res
+
+print(df_train.text)
+
+df_train.text = df_train.text.apply(normalize_text)
+print(df_train.text)
+df_train.loc[df_train['label'] == 2, ['label']] = 1
+
+print(df_train.head())
 
 # train, test = train_test_split(df_train, test_size=0.2, random_state=420)
 
@@ -47,53 +64,42 @@ def score_model(true: np.array, pred: np.array, is_svm: bool=True):
   print(f'{model} Model Confusion Matrix')
   print(confusion_matrix(true, pred))
 
-add_stopwords = set(StopWordRemoverFactory().get_stop_words())
-
-stopwords_set = set(stopwords.words())
-stopwords_set = stopwords_set.union(add_stopwords)
-stemmer = StemmerFactory().create_stemmer()
-
-df_train = pd.read_csv(os.path.join(rootdir, 'data', 'data.csv'))
-df_train.text = df_train.text.apply(normalize_text)
-df_train.loc[df_train['label'] == 2, ['label']] = 1
-
 vectorizer_tf = TfidfVectorizer(tokenizer=lambda x: x, preprocessor=lambda x: x)
 X_train, y_train = vectorizer_tf.fit_transform(df_train.text), df_train.label
 
-if __name__ == '__main__' :
-    print('sastrawi stopwords:', len(add_stopwords))
-    print('nltk stopwords:', len(stopwords_set))
-    print('nltk added stopwords:', len(stopwords_set))
+# print(X_train)
+# print(y_train)
 
-    print(X_train)
-    print(y_train)
-    
-    # SVM
-    svm_model = SVC(C=1.0, kernel='linear', degree=3, gamma='auto')
-    svm_model.fit(X_train, y_train)
+# SVM
+# svm_model = SVC(C=1.0, kernel='linear', degree=3, gamma='auto')
+# svm_model.fit(X_train, y_train)
 
-    # NAIVE BAYES
-    nb_model = MultinomialNB()
-    nb_model.fit(X_train, y_train)
+# # NAIVE BAYES
+# nb_model = MultinomialNB()
+# nb_model.fit(X_train, y_train)
 
-    # RBF SVM
-    svm_model_rbf = SVC(C=1.0, kernel='rbf', degree=3, gamma='auto')
-    svm_model_rbf.fit(X_train, y_train)
+# # RBF SVM
+# svm_model_rbf = SVC(C=1.0, kernel='rbf', degree=3, gamma='auto')
+# svm_model_rbf.fit(X_train, y_train)
 
-    # NB UNIFORM
-    nb_model_uni = MultinomialNB(fit_prior=False)
-    nb_model_uni.fit(X_train, y_train)
+# # NB UNIFORM
+# nb_model_uni = MultinomialNB(fit_prior=False)
+# nb_model_uni.fit(X_train, y_train)
+model = pickle.load(open('model.pkl', 'rb'))
 
-    y_pred_train = svm_model.predict(X_train)
-    score_model(y_train, y_pred_train)
+# y_pred_train = svm_model.predict(X_train)
+# score_model(y_train, y_pred_train)
+# print(y_pred_train)
 
-    y_nb_pred_train = nb_model.predict(X_train)
-    score_model(y_train, y_nb_pred_train, False)
+test = model.predict(vectorizer_tf.transform(normalize_text('pastikan internet sobat lancar')))
+print(test)
+# y_nb_pred_train = nb_model.predict(X_train)
+# score_model(y_train, y_nb_pred_train, False)
 
-    y_pred_train_rbf = svm_model_rbf.predict(X_train)
-    score_model(y_train, y_pred_train_rbf)
+# y_pred_train_rbf = svm_model_rbf.predict(X_train)
+# score_model(y_train, y_pred_train_rbf)
 
-    y_nb_pred_train_uni = nb_model_uni.predict(X_train)
-    score_model(y_train, y_nb_pred_train_uni, False)
+# y_nb_pred_train_uni = nb_model_uni.predict(X_train)
+# score_model(y_train, y_nb_pred_train_uni, False)
 
-    pickle.dump(svm_model, open('model.pkl', 'wb'))
+# pickle.dump(svm_model, open('model.pkl', 'wb'))

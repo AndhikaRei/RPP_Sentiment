@@ -4,7 +4,7 @@ pip install virtualenv
 CD ..
 python -m venv venv
 ECHO Installing requirements...
-CALL virt\Scripts\activate
+CALL venv\Scripts\activate
 pip install -r requirements.txt
 flask db downgrade --directory src/migrations
 flask db upgrade --directory src/migrations
