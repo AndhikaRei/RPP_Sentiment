@@ -52,8 +52,6 @@ df_train.loc[df_train['label'] == 2, ['label']] = 1
 
 print(df_train.head())
 
-# train, test = train_test_split(df_train, test_size=0.2, random_state=420)
-
 def score_model(true: np.array, pred: np.array, is_svm: bool=True):
   model = 'SVM' if is_svm else 'NaiveBayes'
   print(f'{model} Model Accuracy Score: {accuracy_score(true, pred):.6f}')
@@ -67,39 +65,36 @@ def score_model(true: np.array, pred: np.array, is_svm: bool=True):
 vectorizer_tf = TfidfVectorizer(tokenizer=lambda x: x, preprocessor=lambda x: x)
 X_train, y_train = vectorizer_tf.fit_transform(df_train.text), df_train.label
 
-# print(X_train)
-# print(y_train)
+print(X_train)
+print(y_train)
 
 # SVM
-# svm_model = SVC(C=1.0, kernel='linear', degree=3, gamma='auto')
-# svm_model.fit(X_train, y_train)
+svm_model = SVC(C=1.0, kernel='linear', degree=3, gamma='auto')
+svm_model.fit(X_train, y_train)
 
-# # NAIVE BAYES
-# nb_model = MultinomialNB()
-# nb_model.fit(X_train, y_train)
+# NAIVE BAYES
+nb_model = MultinomialNB()
+nb_model.fit(X_train, y_train)
 
-# # RBF SVM
-# svm_model_rbf = SVC(C=1.0, kernel='rbf', degree=3, gamma='auto')
-# svm_model_rbf.fit(X_train, y_train)
+# RBF SVM
+svm_model_rbf = SVC(C=1.0, kernel='rbf', degree=3, gamma='auto')
+svm_model_rbf.fit(X_train, y_train)
 
-# # NB UNIFORM
-# nb_model_uni = MultinomialNB(fit_prior=False)
-# nb_model_uni.fit(X_train, y_train)
-model = pickle.load(open('model.pkl', 'rb'))
+# NB UNIFORM
+nb_model_uni = MultinomialNB(fit_prior=False)
+nb_model_uni.fit(X_train, y_train)
 
-# y_pred_train = svm_model.predict(X_train)
-# score_model(y_train, y_pred_train)
-# print(y_pred_train)
+y_pred_train = svm_model.predict(X_train)
+score_model(y_train, y_pred_train)
+print(y_pred_train)
 
-test = model.predict(vectorizer_tf.transform(normalize_text('pastikan internet sobat lancar')))
-print(test)
-# y_nb_pred_train = nb_model.predict(X_train)
-# score_model(y_train, y_nb_pred_train, False)
+y_nb_pred_train = nb_model.predict(X_train)
+score_model(y_train, y_nb_pred_train, False)
 
-# y_pred_train_rbf = svm_model_rbf.predict(X_train)
-# score_model(y_train, y_pred_train_rbf)
+y_pred_train_rbf = svm_model_rbf.predict(X_train)
+score_model(y_train, y_pred_train_rbf)
 
-# y_nb_pred_train_uni = nb_model_uni.predict(X_train)
-# score_model(y_train, y_nb_pred_train_uni, False)
+y_nb_pred_train_uni = nb_model_uni.predict(X_train)
+score_model(y_train, y_nb_pred_train_uni, False)
 
-# pickle.dump(svm_model, open('model.pkl', 'wb'))
+pickle.dump(svm_model, open('model.pkl', 'wb'))
