@@ -25,7 +25,7 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 from src import rootdir
 
-def normalize_text(string: str, stem: bool=True, sw_elim: bool=True) -> List[str]:
+def normalize_text(string: str, stem: bool=False, sw_elim: bool=True) -> List[str]:
   # filtering, only characters allowed
   filtered = re.sub('[^a-zA-Z]', ' ', string)
   # lower-cased and stemmed using Sastrawi

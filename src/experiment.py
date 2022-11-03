@@ -33,7 +33,7 @@ stopwords_set = stopwords_set.union(add_stopwords)
 print('nltk added stopwords:', len(stopwords_set))
 
 stemmer = StemmerFactory().create_stemmer()
-def normalize_text(string: str, stem: bool=True, sw_elim: bool=True) -> List[str]:
+def normalize_text(string: str, stem: bool=False, sw_elim: bool=True) -> List[str]:
   # filtering, only characters allowed
   filtered = re.sub('[^a-zA-Z]', ' ', string)
   # lower-cased and stemmed using Sastrawi

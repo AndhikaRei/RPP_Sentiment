@@ -4,22 +4,19 @@ Routing for API.
 
 # Import python modules.
 import os
-import random
 import pickle
 from typing import List
 from datetime import datetime
 from flask import Blueprint, request, url_for, redirect, render_template
-from sklearn.feature_extraction.text import TfidfVectorizer
 from werkzeug.utils import secure_filename
 
 # Import created modules.
 from src import db, srcdir
 from src.models.sentiment import Sentiment
-from src.model import vectorizer_tf, normalize_text
+from src.model import normalize_text, vectorizer_tf
 
 # Load model from pickled file
-# vectorizer_path = os.path.join(srcdir, os.environ.get('VECTORIZER_FILE', 'vectorizer.pkl'))
-# vectorizer = pickle.load(open(vectorizer_path, 'rb'))
+vectorizer = vectorizer_tf
 
 model_path = os.path.join(srcdir, os.environ.get('MODEL_FILE', 'model.pkl'))
 model = pickle.load(open(model_path, 'rb'))
@@ -71,7 +68,7 @@ def create_sentiment():
                         sentiment_content = line.split(',')
                         # Construct the sentiment object and add it to the database.
                         norm_text = normalize_text(sentiment_content[0].strip())
-                        vec_sentiment = vectorizer_tf.transform([norm_text])
+                        vec_sentiment = vectorizer.transform([norm_text])
                         prediction = model.predict(vec_sentiment)
 
                         if prediction[0] == 0:
@@ -95,7 +92,7 @@ def create_sentiment():
                 
                 # Construct the sentiment data and save it to the database.
                 norm_text = normalize_text(request.form['text'].strip())
-                vec_sentiment = vectorizer_tf.transform([norm_text])
+                vec_sentiment = vectorizer.transform([norm_text])
                 prediction = model.predict(vec_sentiment)
                 if prediction[0] == 0:
                     sen = "Positive"
