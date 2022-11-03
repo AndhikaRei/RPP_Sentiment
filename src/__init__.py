@@ -16,6 +16,15 @@ srcdir = os.path.abspath(os.path.dirname(__file__))
 rootdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 load_dotenv(os.path.join(rootdir, '.env'))
 
+# Process some environment variables.
+database_url = os.environ.get('DATABASE_URL', None)
+if database_url and database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+if database_url is None:
+    database_url = 'sqlite:///' + os.path.join(srcdir, os.environ.get(
+        'SQLALCHEMY_DATABASE_URI', 'app.sqlite'
+    ))
+
 # Global variables.
 db = SQLAlchemy()
 migrate = Migrate()
@@ -53,12 +62,7 @@ def create_app(config: Config = None) -> Flask:
             THREADED = os.environ.get('THREADED', False),
 
             # SQLAlchemy Configuration.
-            SQLALCHEMY_DATABASE_URI = os.environ.get(
-                'DATABASE_URL',
-                'sqlite:///' + os.path.join(srcdir, os.environ.get(
-                    'SQLALCHEMY_DATABASE_URI', 'app.sqlite'
-                ))
-            ),
+            SQLALCHEMY_DATABASE_URI = database_url,
             SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get(
                 'SQLALCHEMY_TRACK_MODIFICATIONS', False
             ),
