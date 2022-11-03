@@ -1,0 +1,2 @@
+corpora/stopwords
+tokenizers/punkt/PY3/english.pickle
