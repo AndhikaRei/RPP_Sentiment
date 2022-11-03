@@ -14,6 +14,7 @@ from src.routes.default import default_route
 app = create_app()
 
 # Register the routes.
+app.register_blueprint(default_route)
 app.register_blueprint(webpage_route)
 app.register_blueprint(api_route)
-app.register_blueprint(default_route)
+

@@ -60,13 +60,13 @@ flask run
 ### Manual Setup
 After cloning the repository
 ```bash 
-cd src
-python -m venv virt
-virt\Scripts\activate
+pip install virtualenv OR pip3 install virtualenv 
+python -m venv venv OR virtualenv -p python venv
+venv\Scripts\activate
 pip install -r requirements.txt
-flask db downgrade
-flask db upgrade
-flask seed run
+flask db downgrade --directory src/migrations
+flask db upgrade --directory src/migrations
+flask seed run --root src/seeds
 flask run
 ```
 Then open your web browser and go to [localhost:5000](http://localhost:5000)

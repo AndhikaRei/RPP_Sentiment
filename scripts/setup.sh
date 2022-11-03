@@ -1,11 +1,11 @@
 #!/bin/bash
 pip3 install virtualenv
-cd ./../src
+cd ..
 virtualenv -p python venv
 source venv/bin/activate
 pip3 install -r requirements.txt
-flask db downgrade
-flask db upgrade
-flask seed run
-cd ./../scripts
+flask db downgrade --directory src/migrations
+flask db upgrade --directory src/migrations
+flask seed run --root src/seeds
+cd ./scripts
 ./run.sh

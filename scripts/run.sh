@@ -1,6 +1,5 @@
 #!/bin/bash
-cd ./../src
+cd ..
 source venv/bin/activate
 clear
-cd ..
 flask run

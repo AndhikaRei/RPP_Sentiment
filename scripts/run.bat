@@ -1,7 +1,6 @@
 @ECHO OFF
-CD ./../src
+CD ..
 CALL virt\Scripts\activate
 explorer "http://localhost:5000"
-cd ..
 flask run
 PAUSE
