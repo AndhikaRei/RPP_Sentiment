@@ -53,8 +53,11 @@ def create_app(config: Config = None) -> Flask:
             THREADED = os.environ.get('THREADED', False),
 
             # SQLAlchemy Configuration.
-            SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(
-                srcdir, os.environ.get('SQLALCHEMY_DATABASE_URI', 'app.sqlite')
+            SQLALCHEMY_DATABASE_URI = os.environ.get(
+                'DATABASE_URL',
+                'sqlite:///' + os.path.join(srcdir, os.environ.get(
+                    'SQLALCHEMY_DATABASE_URI', 'app.sqlite'
+                ))
             ),
             SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get(
                 'SQLALCHEMY_TRACK_MODIFICATIONS', False
