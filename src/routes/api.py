@@ -12,11 +12,12 @@ from flask import Blueprint, request, url_for, redirect, render_template
 from werkzeug.utils import secure_filename
 
 # Import created modules.
-from src import db
+from src import db, srcdir
 from src.models.sentiment import Sentiment
 
 # Load model from pickled file
-model = pickle.load(open('model.pkl', 'rb'))
+model_path = os.path.join(srcdir, os.environ.get('MODEL_FILE', 'model.pkl'))
+model = pickle.load(open(model_path, 'rb'))
 
 # Make the blueprint.
 api_route = Blueprint('api_route', __name__, url_prefix='/api/v1')

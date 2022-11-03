@@ -12,8 +12,9 @@ from dotenv import load_dotenv
 # Import created modules.
 
 # Load Environment Variables.
-basedir = os.path.abspath(os.path.dirname(__file__))
-load_dotenv(os.path.join(basedir, '.env'))
+srcdir = os.path.abspath(os.path.dirname(__file__))
+rootdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+load_dotenv(os.path.join(rootdir, '.env'))
 
 # Global variables.
 db = SQLAlchemy()
@@ -48,12 +49,12 @@ def create_app(config: Config = None) -> Flask:
             FLASK_ENV = os.environ.get('FLASK_ENV', 'development'),
             FLASK_APP = os.environ.get('FLASK_APP', 'app.py'),
             SECRET_KEY = os.environ.get('SECRET_KEY', "mysecret"),
-            UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', "./static/uploads"),
+            UPLOAD_FOLDER = os.path.join(srcdir, os.environ.get('UPLOAD_FOLDER', "static/uploads")) ,
             THREADED = os.environ.get('THREADED', False),
 
             # SQLAlchemy Configuration.
             SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(
-                basedir, os.environ.get('SQLALCHEMY_DATABASE_URI', 'app.sqlite')
+                srcdir, os.environ.get('SQLALCHEMY_DATABASE_URI', 'app.sqlite')
             ),
             SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get(
                 'SQLALCHEMY_TRACK_MODIFICATIONS', False
